@@ -1,0 +1,68 @@
+
+"""
+SMART FX NEXUS
+Dual Trading System
+Deriv API + MetaTrader 5
+
+Version: 1.0
+Initial mode: DEMO / PAPER
+"""
+
+from datetime import datetime
+import json
+
+BOT_NAME = "SMART FX NEXUS"
+VERSION = "1.0.0"
+
+CONFIG = {
+    "trading_mode": "DEMO",
+    "deriv_enabled": False,
+    "mt5_enabled": False,
+    "risk_percent": 1.0,
+    "max_open_trades": 2,
+    "stop_loss_required": True,
+    "take_profit_required": True
+}
+
+
+def display_dashboard():
+    print("=" * 45)
+    print(f"       {BOT_NAME}")
+    print("=" * 45)
+    print("Version:", VERSION)
+    print("Date:", datetime.now())
+    print("Trading mode:", CONFIG["trading_mode"])
+    print("Deriv API:", "ON" if CONFIG["deriv_enabled"] else "OFF")
+    print("MT5:", "ON" if CONFIG["mt5_enabled"] else "OFF")
+    print("Risk per trade:", str(CONFIG["risk_percent"]) + "%")
+    print("Maximum open trades:", CONFIG["max_open_trades"])
+    print("=" * 45)
+
+
+def check_trade(signal, stop_loss, take_profit):
+    if signal not in ("BUY", "SELL"):
+        return False
+
+    if CONFIG["stop_loss_required"] and stop_loss is None:
+        return False
+
+    if CONFIG["take_profit_required"] and take_profit is None:
+        return False
+
+    if stop_loss <= 0 or take_profit <= 0:
+        return False
+
+    print("Trade passed safety checks.")
+    print("Signal:", signal)
+    return True
+
+
+def start_bot():
+    display_dashboard()
+    print("SMART FX NEXUS is initialized.")
+    print("No live trades will be placed.")
+    print("Waiting for trading connections...")
+
+
+if __name__ == "__main__":
+    start_bot()
